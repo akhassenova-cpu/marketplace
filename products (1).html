@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f5f0e8;
+      --stone: #d8cfc2;
+      --charcoal: #2a2620;
+      --warm-mid: #7a6f62;
+      --accent: #b5651d;
+      --card-bg: #faf7f2;
+    }
+
+    body {
+      background-color: var(--cream);
+      color: var(--charcoal);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 4rem;
+      border-bottom: 1px solid var(--stone);
+      position: sticky;
+      top: 0;
+      background: var(--cream);
+      z-index: 10;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--charcoal);
+      text-transform: uppercase;
+    }
+
+    .logo span { font-style: italic; color: var(--accent); }
+
+    nav a {
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warm-mid);
+      text-decoration: none;
+      margin-left: 2.5rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--charcoal); }
+
+    /* ── Hero band ── */
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem 3.5rem;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--charcoal);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--warm-mid);
+    }
+
+    .hero-sub {
+      margin-top: 1.2rem;
+      font-size: 0.88rem;
+      color: var(--warm-mid);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      max-width: 900px;
+      margin: 0 auto 3.5rem;
+      padding: 0 2rem;
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--stone); }
+    .divider-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2px;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card-bg);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.10s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.20s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
+    .card:nth-child(6) { animation-delay: 0.30s; }
+    .card:nth-child(7) { animation-delay: 0.35s; }
+    .card:nth-child(8) { animation-delay: 0.40s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:hover { transform: translateY(-4px); z-index: 2; }
+
+    /* image */
+    .card-img-wrap {
+      width: 100%;
+      padding-top: 115%;
+      position: relative;
+      overflow: hidden;
+      background: var(--stone);
+    }
+
+    .card-img-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .card:hover .card-img-wrap img { transform: scale(1.06); }
+
+    /* badge */
+    .badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+    }
+
+    /* quick-add overlay */
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(42, 38, 32, 0.45);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 1.8rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover .card-overlay { opacity: 1; }
+
+    .btn-quick {
+      background: var(--cream);
+      color: var(--charcoal);
+      border: none;
+      padding: 0.65rem 1.8rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      border-radius: 2px;
+    }
+
+    .btn-quick:hover { background: var(--charcoal); color: var(--cream); }
+
+    /* card body */
+    .card-body {
+      padding: 1.2rem 1.4rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      border-top: 1px solid var(--stone);
+    }
+
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      line-height: 1.2;
+    }
+
+    .card-sub {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--warm-mid);
+      text-transform: uppercase;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+    }
+
+    .card-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .card-price .orig {
+      font-size: 0.9rem;
+      color: var(--warm-mid);
+      text-decoration: line-through;
+      margin-right: 0.4rem;
+      font-weight: 300;
+    }
+
+    .stars {
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--stone);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--warm-mid);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Maison<span>·</span>Belle</div>
+  <nav>
+    <a href="#">Collection</a>
+    <a href="#">About</a>
+    <a href="#">Journal</a>
+    <a href="#">Cart (0)</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <p class="hero-eyebrow">New Arrivals — Spring 2026</p>
+  <h1>Crafted with <em>intention</em>,<br>made to last.</h1>
+  <p class="hero-sub">Each piece is thoughtfully sourced and designed for everyday beauty.</p>
+</section>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-dot"></div>
+  <div class="divider-line"></div>
+</div>
+
+<main class="grid" id="product-grid">
+  <!-- Cards injected by JS -->
+</main>
+
+<footer>© 2026 Maison·Belle — All rights reserved</footer>
+
+<script>
+  const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTH03FuHUlGkY1RNuK_cnWTvqD_twWbRXdvTxqr_i89ZJRYNs70fW80Bpkywagi68NV4XTzjFvH4WzN/pub?output=csv';
+
+  const grid = document.getElementById('product-grid');
+
+  // ── Minimal CSV parser (handles quoted fields with commas) ──
+  function parseCSV(text) {
+    const lines = text.trim().split(/\r?\n/);
+    const headers = splitCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+    return lines.slice(1).map(line => {
+      const vals = splitCSVLine(line);
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = (vals[i] || '').trim());
+      return obj;
+    });
+  }
+
+  function splitCSVLine(line) {
+    const result = [];
+    let cur = '', inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { inQuotes = !inQuotes; }
+      else if (ch === ',' && !inQuotes) { result.push(cur); cur = ''; }
+      else { cur += ch; }
+    }
+    result.push(cur);
+    return result;
+  }
+
+  function renderCard(p, index) {
+    const oldPrice = p.oldprice && p.oldprice !== '' && p.oldprice !== 'null' ? p.oldprice : null;
+    const badge    = p.badge    && p.badge    !== '' && p.badge    !== 'null' ? p.badge    : null;
+    const price    = p.price    ? `$${parseFloat(p.price).toFixed(2)}` : '';
+    const priceHTML = oldPrice
+      ? `<span class="orig">$${parseFloat(oldPrice).toFixed(2)}</span>${price}`
+      : price;
+
+    // Dynamic animation delay per card
+    const delay = (0.05 + index * 0.05).toFixed(2);
+
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.style.animationDelay = `${delay}s`;
+    card.innerHTML = `
+      <div class="card-img-wrap">
+        <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+        ${badge ? `<span class="badge">${badge}</span>` : ''}
+        <div class="card-overlay">
+          <button class="btn-quick">Add to Cart</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-sub">${p.sub || ''}</p>
+        <h2 class="card-name">${p.name || ''}</h2>
+        <div class="card-footer">
+          <div class="card-price">${priceHTML}</div>
+          <div class="stars">${p.rating || ''}</div>
+        </div>
+      </div>`;
+    return card;
+  }
+
+  function showError(msg) {
+    grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--warm-mid);font-size:0.9rem;letter-spacing:0.06em;">${msg}</p>`;
+  }
+
+  // ── Fetch & render ──
+  grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--warm-mid);font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;">Loading products…</p>`;
+
+  fetch(CSV_URL)
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.text();
+    })
+    .then(text => {
+      const products = parseCSV(text).filter(p => p.name);
+      if (!products.length) { showError('No products found in the spreadsheet.'); return; }
+      grid.innerHTML = '';
+      products.forEach((p, i) => grid.appendChild(renderCard(p, i)));
+    })
+    .catch(err => {
+      console.error(err);
+      showError('Could not load products. Please check your spreadsheet URL and sharing settings.');
+    });
+</script>
+</body>
+</html>
