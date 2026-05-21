@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enter Product — Maison·Belle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f5f0e8;
+      --stone: #d8cfc2;
+      --charcoal: #2a2620;
+      --warm-mid: #7a6f62;
+      --accent: #b5651d;
+      --card-bg: #faf7f2;
+      --error: #c0392b;
+      --success: #4a7c59;
+    }
+
+    body {
+      background-color: var(--cream);
+      color: var(--charcoal);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 4rem;
+      border-bottom: 1px solid var(--stone);
+      position: sticky;
+      top: 0;
+      background: var(--cream);
+      z-index: 10;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--charcoal);
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .logo span { font-style: italic; color: var(--accent); }
+
+    nav a {
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warm-mid);
+      text-decoration: none;
+      margin-left: 2.5rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--charcoal); }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warm-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--charcoal); }
+    .back-link svg {
+      width: 11px; height: 11px;
+      stroke: currentColor; fill: none;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    /* ── Page hero ── */
+    .page-hero {
+      text-align: center;
+      padding: 4rem 2rem 2.5rem;
+    }
+
+    .page-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .page-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.08;
+      color: var(--charcoal);
+    }
+
+    .page-hero h1 em {
+      font-style: italic;
+      color: var(--warm-mid);
+    }
+
+    .page-hero-sub {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--warm-mid);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      padding: 0 2rem;
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--stone); }
+    .divider-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+    /* ── Form wrapper ── */
+    .form-wrapper {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-card {
+      background: var(--card-bg);
+      border: 1px solid var(--stone);
+      border-radius: 3px;
+      padding: 3rem 3.5rem;
+    }
+
+    /* ── Section labels ── */
+    .form-section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.6rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    /* ── Field groups ── */
+    .field-group {
+      margin-bottom: 2.8rem;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      font-size: 0.7rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--warm-mid);
+    }
+
+    label .required {
+      color: var(--accent);
+      margin-left: 0.2rem;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--cream);
+      border: 1px solid var(--stone);
+      border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      color: var(--charcoal);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder { color: var(--stone); }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(181, 101, 29, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.55;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237a6f62' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    .field-hint {
+      font-size: 0.7rem;
+      color: var(--warm-mid);
+      letter-spacing: 0.03em;
+      margin-top: -0.2rem;
+    }
+
+    /* ── Image preview ── */
+    .img-preview-wrap {
+      margin-top: 0.6rem;
+      height: 110px;
+      border: 1px dashed var(--stone);
+      border-radius: 2px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--cream);
+      transition: border-color 0.2s;
+    }
+
+    .img-preview-wrap.has-img { border-style: solid; border-color: var(--stone); }
+
+    .img-preview-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .img-preview-placeholder {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--stone);
+      text-transform: uppercase;
+    }
+
+    /* ── Stars selector ── */
+    .stars-selector {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--stone);
+      transition: color 0.15s, transform 0.15s;
+      padding: 0.15rem;
+      line-height: 1;
+    }
+
+    .star-btn.active { color: var(--accent); }
+    .star-btn:hover { transform: scale(1.2); color: var(--accent); }
+
+    /* ── Submit area ── */
+    .submit-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--stone);
+    }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.9rem 3.5rem;
+      background: var(--charcoal);
+      color: var(--cream);
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.22s, opacity 0.22s;
+      min-width: 220px;
+    }
+
+    .btn-submit:hover:not(:disabled) { background: var(--accent); }
+    .btn-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .btn-submit .spinner {
+      width: 14px; height: 14px;
+      border: 2px solid rgba(245,240,232,0.3);
+      border-top-color: var(--cream);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    .btn-submit.loading .spinner { display: block; }
+    .btn-submit.loading .btn-label { display: none; }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .submit-note {
+      font-size: 0.7rem;
+      color: var(--warm-mid);
+      letter-spacing: 0.05em;
+      text-align: center;
+    }
+
+    /* ── Feedback messages ── */
+    .feedback {
+      display: none;
+      border-radius: 3px;
+      padding: 1.2rem 1.6rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.03em;
+      line-height: 1.55;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .feedback.success {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      background: rgba(74, 124, 89, 0.1);
+      border: 1px solid rgba(74, 124, 89, 0.3);
+      color: var(--success);
+    }
+
+    .feedback.error {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      background: rgba(192, 57, 43, 0.08);
+      border: 1px solid rgba(192, 57, 43, 0.25);
+      color: var(--error);
+    }
+
+    .feedback-icon { font-size: 1.1rem; flex-shrink: 0; line-height: 1.4; }
+
+    /* ── Success overlay ── */
+    .success-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(42, 38, 32, 0.55);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .success-overlay.show { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .success-modal {
+      background: var(--card-bg);
+      border: 1px solid var(--stone);
+      border-radius: 3px;
+      padding: 3.5rem 4rem;
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      animation: scaleIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .success-modal .check {
+      font-size: 2.4rem;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    .success-modal h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 0.6rem;
+    }
+
+    .success-modal p {
+      font-size: 0.82rem;
+      color: var(--warm-mid);
+      letter-spacing: 0.04em;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .success-modal .redirect-note {
+      font-size: 0.72rem;
+      color: var(--stone);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 1.5rem;
+    }
+
+    .progress-bar-wrap {
+      width: 100%;
+      height: 2px;
+      background: var(--stone);
+      border-radius: 1px;
+      margin-top: 1.2rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      border-radius: 1px;
+      transition: width 3s linear;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--stone);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--warm-mid);
+      text-transform: uppercase;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      header { padding: 1.5rem 1.5rem; }
+      .form-card { padding: 2rem 1.5rem; }
+      .field-row { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <a href="index.html" class="logo">Maison<span>·</span>Belle</a>
+  <nav>
+    <a href="index.html" class="back-link">
+      <svg viewBox="0 0 12 12" aria-hidden="true">
+        <polyline points="7 2 3 6 7 10"/>
+        <line x1="3" y1="6" x2="11" y2="6"/>
+      </svg>
+      Back to Shop
+    </a>
+  </nav>
+</header>
+
+<!-- ── Page Hero ── -->
+<section class="page-hero">
+  <p class="page-eyebrow">Product Management</p>
+  <h1>Add a <em>new</em> product</h1>
+  <p class="page-hero-sub">Fill in the details below to list a new item in the collection.</p>
+</section>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-dot"></div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- ── Form ── -->
+<div class="form-wrapper">
+  <div class="form-card">
+
+    <!-- Section: Core Info -->
+    <p class="form-section-label">Product Details</p>
+
+    <div class="field-group">
+      <div class="field">
+        <label for="name">Product Name <span class="required">*</span></label>
+        <input type="text" id="name" name="name" placeholder="e.g. Linen Tote Bag" required autocomplete="off"/>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="sub">Category / Subtitle</label>
+          <input type="text" id="sub" name="sub" placeholder="e.g. Accessories" autocomplete="off"/>
+          <p class="field-hint">Appears as small label above the name</p>
+        </div>
+        <div class="field">
+          <label for="badge">Badge Label</label>
+          <input type="text" id="badge" name="badge" placeholder="e.g. New · Sale · Limited" autocomplete="off"/>
+          <p class="field-hint">Leave blank for no badge</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: Pricing -->
+    <p class="form-section-label">Pricing</p>
+
+    <div class="field-group">
+      <div class="field-row">
+        <div class="field">
+          <label for="price">Price <span class="required">*</span></label>
+          <input type="number" id="price" name="price" placeholder="0.00" min="0" step="0.01" required/>
+          <p class="field-hint">Current selling price (without $)</p>
+        </div>
+        <div class="field">
+          <label for="oldprice">Original Price</label>
+          <input type="number" id="oldprice" name="oldprice" placeholder="0.00" min="0" step="0.01"/>
+          <p class="field-hint">Shows as strikethrough; leave blank if not on sale</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: Image -->
+    <p class="form-section-label">Product Image</p>
+
+    <div class="field-group">
+      <div class="field">
+        <label for="img">Image URL <span class="required">*</span></label>
+        <input type="url" id="img" name="img" placeholder="https://…" required autocomplete="off"/>
+        <p class="field-hint">Direct link to the product image (jpg, png, webp)</p>
+      </div>
+      <div class="img-preview-wrap" id="img-preview-wrap">
+        <span class="img-preview-placeholder">Preview</span>
+      </div>
+    </div>
+
+    <!-- Section: Rating -->
+    <p class="form-section-label">Star Rating</p>
+
+    <div class="field-group">
+      <div class="field">
+        <label>Rating</label>
+        <div class="stars-selector" id="stars-selector" role="group" aria-label="Star rating">
+          <button type="button" class="star-btn" data-value="1" aria-label="1 star">★</button>
+          <button type="button" class="star-btn" data-value="2" aria-label="2 stars">★</button>
+          <button type="button" class="star-btn" data-value="3" aria-label="3 stars">★</button>
+          <button type="button" class="star-btn" data-value="4" aria-label="4 stars">★</button>
+          <button type="button" class="star-btn" data-value="5" aria-label="5 stars">★</button>
+        </div>
+        <input type="hidden" id="rating" name="rating" value=""/>
+        <p class="field-hint">Click to set rating; leave unselected for none</p>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-area">
+      <div id="feedback-success" class="feedback success" role="alert" aria-live="polite">
+        <span class="feedback-icon">✓</span>
+        <span id="feedback-success-text">Product submitted successfully.</span>
+      </div>
+      <div id="feedback-error" class="feedback error" role="alert" aria-live="polite">
+        <span class="feedback-icon">!</span>
+        <span id="feedback-error-text">Something went wrong. Please try again.</span>
+      </div>
+
+      <button type="button" class="btn-submit" id="btn-submit">
+        <span class="btn-label">Submit Product</span>
+        <span class="spinner" aria-hidden="true"></span>
+      </button>
+      <p class="submit-note">Your product will appear in the shop after the spreadsheet refreshes.</p>
+    </div>
+
+  </div><!-- /form-card -->
+</div><!-- /form-wrapper -->
+
+<!-- ── Success Overlay ── -->
+<div class="success-overlay" id="success-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="success-modal">
+    <span class="check" aria-hidden="true">✦</span>
+    <h2 id="modal-title">Product Added</h2>
+    <p>Your product has been submitted successfully and will appear in the collection shortly.</p>
+    <p class="redirect-note">Returning to shop…</p>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 Maison·Belle — All rights reserved</footer>
+
+<script>
+  // ── Configuration ──────────────────────────────────────────────
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxGiwrOmyKF1FtWOCpbPRV1sDDMdMWuIP4mgJG5DbrVwAIN6NHXtFi04Wk3IvgnLMKSMg/exec";
+  // ──────────────────────────────────────────────────────────────
+
+  // ── Image preview ──
+  const imgInput       = document.getElementById('img');
+  const previewWrap    = document.getElementById('img-preview-wrap');
+
+  function updatePreview(url) {
+    if (!url) {
+      previewWrap.innerHTML = '<span class="img-preview-placeholder">Preview</span>';
+      previewWrap.classList.remove('has-img');
+      return;
+    }
+    const tempImg = new Image();
+    tempImg.onload = () => {
+      previewWrap.innerHTML = '';
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = 'Preview';
+      previewWrap.appendChild(img);
+      previewWrap.classList.add('has-img');
+    };
+    tempImg.onerror = () => {
+      previewWrap.innerHTML = '<span class="img-preview-placeholder" style="color:#c0392b;">Invalid URL</span>';
+      previewWrap.classList.remove('has-img');
+    };
+    tempImg.src = url;
+  }
+
+  let previewTimeout;
+  imgInput.addEventListener('input', () => {
+    clearTimeout(previewTimeout);
+    previewTimeout = setTimeout(() => updatePreview(imgInput.value.trim()), 500);
+  });
+
+  // ── Star rating ──
+  const starBtns    = document.querySelectorAll('.star-btn');
+  const ratingInput = document.getElementById('rating');
+  let selectedStars = 0;
+
+  function renderStars(count) {
+    starBtns.forEach(btn => {
+      btn.classList.toggle('active', parseInt(btn.dataset.value) <= count);
+    });
+  }
+
+  starBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const val = parseInt(btn.dataset.value);
+      if (val === selectedStars) {
+        selectedStars = 0;
+        ratingInput.value = '';
+      } else {
+        selectedStars = val;
+        ratingInput.value = '★'.repeat(val) + '☆'.repeat(5 - val);
+      }
+      renderStars(selectedStars);
+    });
+
+    btn.addEventListener('mouseenter', () => renderStars(parseInt(btn.dataset.value)));
+    btn.addEventListener('mouseleave', () => renderStars(selectedStars));
+  });
+
+  // ── Feedback helpers ──
+  function showFeedback(type, msg) {
+    document.getElementById('feedback-success').style.display = 'none';
+    document.getElementById('feedback-error').style.display   = 'none';
+
+    if (type === 'success') {
+      document.getElementById('feedback-success-text').textContent = msg || 'Product submitted successfully.';
+      document.getElementById('feedback-success').style.display    = 'flex';
+    } else {
+      document.getElementById('feedback-error-text').textContent = msg || 'Something went wrong.';
+      document.getElementById('feedback-error').style.display     = 'flex';
+    }
+  }
+
+  // ── Success overlay + redirect ──
+  function showSuccessAndRedirect() {
+    const overlay = document.getElementById('success-overlay');
+    const bar     = document.getElementById('progress-bar');
+    overlay.classList.add('show');
+
+    // Trigger CSS transition: fill bar over 3 s then redirect
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => { bar.style.width = '100%'; });
+    });
+
+    setTimeout(() => { window.location.href = 'index.html'; }, 3200);
+  }
+
+  // ── Validation ──
+  function validate() {
+    const name  = document.getElementById('name').value.trim();
+    const price = document.getElementById('price').value.trim();
+    const img   = document.getElementById('img').value.trim();
+
+    if (!name)  { showFeedback('error', 'Please enter a product name.'); return false; }
+    if (!price) { showFeedback('error', 'Please enter a price.'); return false; }
+    if (!img)   { showFeedback('error', 'Please enter an image URL.'); return false; }
+    return true;
+  }
+
+  // ── Submit ──
+  const submitBtn = document.getElementById('btn-submit');
+
+  submitBtn.addEventListener('click', async () => {
+    // Hide previous feedback
+    document.getElementById('feedback-success').style.display = 'none';
+    document.getElementById('feedback-error').style.display   = 'none';
+
+    if (!validate()) return;
+
+    // Collect values
+    const fields = {
+      name:     document.getElementById('name').value.trim(),
+      sub:      document.getElementById('sub').value.trim(),
+      price:    document.getElementById('price').value.trim(),
+      oldprice: document.getElementById('oldprice').value.trim(),
+      img:      document.getElementById('img').value.trim(),
+      badge:    document.getElementById('badge').value.trim(),
+      rating:   document.getElementById('rating').value.trim(),
+    };
+
+    // Loading state
+    submitBtn.disabled = true;
+    submitBtn.classList.add('loading');
+
+    // Build URL params
+    const params = new URLSearchParams(fields);
+    const url    = `${WEB_APP_URL}?${params.toString()}`;
+
+    try {
+      const res = await fetch(url, { method: 'GET', mode: 'no-cors' });
+      // no-cors means we can't read the response; treat as success if no throw
+      showSuccessAndRedirect();
+    } catch (err) {
+      console.error('Submission error:', err);
+      showFeedback('error', 'Submission failed. Check your Web App URL or network connection.');
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+    }
+  });
+</script>
+</body>
+</html>
